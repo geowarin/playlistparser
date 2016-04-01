@@ -23,36 +23,37 @@ public class PlaylistParserTest {
         String playlistContent = "";
 
         List favoriteSongs = playlistParser.getFavoriteSongs(createPlayList(playlistContent));
-        assertThat(favoriteSongs).isEqualTo(Lists.emptyList());
+        assertThat(favoriteSongs).isEmpty();
     }
 
     @Test
     public void should_load_one_line_file() throws Exception {
-        PlaylistParser playlistParser = new PlaylistParser();
-        String playlistContent = createPlayList("Animal Collective|My Girls");
+        List<FavoriteSong> favoriteSongs = getFavoriteSongs(
+                "Animal Collective|My Girls"
+        );
 
-        List favoriteSongs = playlistParser.getFavoriteSongs(createPlayList(playlistContent));
-
-        List<FavoriteSong> expected = Arrays.asList(
+        assertThat(favoriteSongs).containsExactly(
                 new FavoriteSong("Animal Collective", "My Girls")
         );
-        assertThat(favoriteSongs).isEqualTo(expected);
     }
 
     @Test
-    public void should_load_two_indentic_songs() throws Exception {
-        PlaylistParser playlistParser = new PlaylistParser();
-        String playlistContent = createPlayList(
+    public void should_load_two_identical_songs() throws Exception {
+        List<FavoriteSong> favoriteSongs = getFavoriteSongs(
                 "Animal Collective|My Girls",
                 "Animal Collective|My Girls"
         );
 
-        List favoriteSongs = playlistParser.getFavoriteSongs(playlistContent);
-
-        List<FavoriteSong> expected = Arrays.asList(
+        assertThat(favoriteSongs).containsExactly(
                 new FavoriteSong("Animal Collective", "My Girls")
         );
-        assertThat(favoriteSongs).isEqualTo(expected);
+    }
+
+    private List<FavoriteSong> getFavoriteSongs(String... playlist) {
+        PlaylistParser playlistParser = new PlaylistParser();
+        String playlistContent = createPlayList(playlist);
+
+        return playlistParser.getFavoriteSongs(playlistContent);
     }
 
     private String createPlayList(String... songs) {
