@@ -2,9 +2,10 @@ package com.smartholiday.exam;
 
 import com.smartholiday.exam.model.FavoriteSong;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PlaylistParser {
 
@@ -13,20 +14,22 @@ public class PlaylistParser {
      * @return a list of string representation of a song
      */
     public List<FavoriteSong> getFavoriteSongs(final String playlistContent) {
-        ArrayList<FavoriteSong> favoriteSongs = new ArrayList<>();
-        try (Scanner scanner = new Scanner(playlistContent)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] data = line.split("\\|");
-
-                invariant(data.length == 2, "Could not parse line " + line);
-
-                String artist = data[0];
-                String name = data[1];
-                favoriteSongs.add(new FavoriteSong(artist, name));
-            }
+        if (playlistContent.trim().isEmpty()) {
+            return Collections.emptyList();
         }
-        return favoriteSongs;
+
+        return Stream.of(playlistContent.split(System.lineSeparator()))
+                .map(this::lineToSong)
+                .collect(Collectors.toList());
+    }
+
+    private FavoriteSong lineToSong(String line) {
+        String[] data = line.split("\\|");
+        invariant(data.length == 2, "Could not parse line " + line);
+
+        String artist = data[0];
+        String name = data[1];
+        return new FavoriteSong(artist, name);
     }
 
     private void invariant(boolean condition, String message) {
