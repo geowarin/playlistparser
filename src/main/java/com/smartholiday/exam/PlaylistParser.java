@@ -2,10 +2,8 @@ package com.smartholiday.exam;
 
 import com.smartholiday.exam.model.FavoriteSong;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,10 +18,15 @@ public class PlaylistParser {
             return Collections.emptyList();
         }
 
-        Set<FavoriteSong> unique = Stream.of(playlistContent.split(System.lineSeparator()))
+        Map<FavoriteSong, Long> songsByOccurrence = Stream.of(playlistContent.split(System.lineSeparator()))
                 .map(this::lineToSong)
-                .collect(Collectors.toSet());
-        return new ArrayList<>(unique);
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        return songsByOccurrence.entrySet().stream()
+                .sorted(Comparator.comparingDouble(entry -> -entry.getValue()))
+                .limit(5)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
     private FavoriteSong lineToSong(String line) {

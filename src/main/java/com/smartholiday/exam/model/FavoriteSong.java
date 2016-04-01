@@ -32,4 +32,12 @@ public class FavoriteSong {
     public int hashCode() {
         return Objects.hash(artist, name);
     }
+
+    @Override
+    public String toString() {
+        return "FavoriteSong{" +
+                "artist='" + artist + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

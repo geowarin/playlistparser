@@ -1,15 +1,12 @@
 package com.smartholiday.exam;
 
 import com.smartholiday.exam.model.FavoriteSong;
-import org.assertj.core.util.Lists;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,6 +43,36 @@ public class PlaylistParserTest {
 
         assertThat(favoriteSongs).containsExactly(
                 new FavoriteSong("Animal Collective", "My Girls")
+        );
+    }
+
+    @Test
+    public void should_handle_more_than_five_songs() throws Exception {
+        List<FavoriteSong> favoriteSongs = getFavoriteSongs(
+                "song1|band1",
+                "song2|band1",
+                "song3|band1",
+                "song4|band1",
+                "song5|band1",
+                "song6|band1"
+        );
+
+        assertThat(favoriteSongs).hasSize(5);
+    }
+
+    @Test
+    public void should_sort_songs() throws Exception {
+        List<FavoriteSong> favoriteSongs = getFavoriteSongs(
+                "song2|band1",
+                "song2|band1",
+                "song2|band1",
+                "song1|band1",
+                "song1|band1"
+        );
+
+        assertThat(favoriteSongs).containsExactly(
+                new FavoriteSong("song2", "band1"),
+                new FavoriteSong("song1", "band1")
         );
     }
 
