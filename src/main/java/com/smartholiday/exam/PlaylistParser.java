@@ -1,6 +1,7 @@
 package com.smartholiday.exam;
 
 import com.smartholiday.exam.model.FavoriteSong;
+import com.smartholiday.exam.model.Song;
 
 import java.util.*;
 import java.util.function.Function;
@@ -18,25 +19,25 @@ public class PlaylistParser {
             return Collections.emptyList();
         }
 
-        Map<FavoriteSong, Long> songsByOccurrence = Stream.of(playlistContent.split("\n|\r\n"))
+        Map<Song, Long> songsByOccurrence = Stream.of(playlistContent.split("\n|\r\n"))
                 .map(this::lineToSong)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
         return songsByOccurrence.entrySet().stream()
                 .sorted(Comparator.comparingDouble(entry -> -entry.getValue()))
                 .limit(5)
-                .map(Map.Entry::getKey)
+                .map(songEntry -> new FavoriteSong(songEntry.getKey(), songEntry.getValue()))
                 .collect(Collectors.toList());
     }
 
-    private FavoriteSong lineToSong(String line) {
+    private Song lineToSong(String line) {
         String[] data = line.split("\\|");
         invariant(data.length == 2 || data.length == 3, "Could not parse line " + line);
 
         String artist = data[0];
         String name = data[1];
         String classifier = data.length > 2 ? data[2] : null;
-        return new FavoriteSong(artist, name, classifier);
+        return new Song(artist, name, classifier);
     }
 
     private void invariant(boolean condition, String message) {

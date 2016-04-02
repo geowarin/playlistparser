@@ -1,6 +1,7 @@
 package com.smartholiday.exam;
 
 import com.smartholiday.exam.model.FavoriteSong;
+import com.smartholiday.exam.model.Song;
 import org.junit.Test;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class PlaylistParserTest {
         );
 
         assertThat(favoriteSongs).containsExactly(
-                new FavoriteSong("Animal Collective", "My Girls")
+                new FavoriteSong("Animal Collective", "My Girls", 1)
         );
     }
 
@@ -39,7 +40,7 @@ public class PlaylistParserTest {
         );
 
         assertThat(favoriteSongs).containsExactly(
-                new FavoriteSong("Animal Collective", "My Girls")
+                new FavoriteSong("Animal Collective", "My Girls", 2)
         );
     }
 
@@ -68,8 +69,8 @@ public class PlaylistParserTest {
         );
 
         assertThat(favoriteSongs).containsExactly(
-                new FavoriteSong("song2", "band1"),
-                new FavoriteSong("song1", "band1")
+                new FavoriteSong("song2", "band1", 3),
+                new FavoriteSong("song1", "band1", 2)
         );
     }
 

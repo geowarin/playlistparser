@@ -1,6 +1,7 @@
 package com.smartholiday.exam;
 
 import com.smartholiday.exam.model.FavoriteSong;
+import com.smartholiday.exam.model.Song;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,16 +15,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PlaylistParserITTest {
 
     @Test
-    public void should_load_empty_file() throws Exception {
+    public void should_load_demo_file() throws Exception {
         String fileContent = loadFile("/playlist_input.txt");
 
         List<FavoriteSong> favoriteSongs = new PlaylistParser().getFavoriteSongs(fileContent);
         assertThat(favoriteSongs).containsExactly(
-                new FavoriteSong("Yeah Yeah Yeahs", "Zero"),
-                new FavoriteSong("Lady Gaga", "Bad Romance"),
-                new FavoriteSong("Animal Collective", "What Would I Want? Sky"),
-                new FavoriteSong("Animal Collective", "Brother Sport"),
-                new FavoriteSong("Yeah Yeah Yeahs", "Heads Will Roll")
+                new FavoriteSong("Yeah Yeah Yeahs", "Zero", 5),
+                new FavoriteSong("Lady Gaga", "Bad Romance", 4),
+                new FavoriteSong("Animal Collective", "What Would I Want? Sky", 4),
+                new FavoriteSong("Animal Collective", "Brother Sport", 3),
+                new FavoriteSong("Yeah Yeah Yeahs", "Heads Will Roll", 3)
         );
     }
 
