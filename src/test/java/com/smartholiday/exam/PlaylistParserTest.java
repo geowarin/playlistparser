@@ -3,9 +3,6 @@ package com.smartholiday.exam;
 import com.smartholiday.exam.model.FavoriteSong;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -85,9 +82,5 @@ public class PlaylistParserTest {
 
     private String createPlayList(String... songs) {
         return Stream.of(songs).collect(Collectors.joining(System.lineSeparator()));
-    }
-
-    private String loadFile(String filename) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(createPlayList(filename))));
     }
 }

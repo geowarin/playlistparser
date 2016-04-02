@@ -18,7 +18,7 @@ public class PlaylistParser {
             return Collections.emptyList();
         }
 
-        Map<FavoriteSong, Long> songsByOccurrence = Stream.of(playlistContent.split(System.lineSeparator()))
+        Map<FavoriteSong, Long> songsByOccurrence = Stream.of(playlistContent.split("\n|\r\n"))
                 .map(this::lineToSong)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
@@ -31,11 +31,12 @@ public class PlaylistParser {
 
     private FavoriteSong lineToSong(String line) {
         String[] data = line.split("\\|");
-        invariant(data.length == 2, "Could not parse line " + line);
+        invariant(data.length == 2 || data.length == 3, "Could not parse line " + line);
 
         String artist = data[0];
         String name = data[1];
-        return new FavoriteSong(artist, name);
+        String classifier = data.length > 2 ? data[2] : null;
+        return new FavoriteSong(artist, name, classifier);
     }
 
     private void invariant(boolean condition, String message) {
