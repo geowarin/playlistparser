@@ -1,5 +1,7 @@
 package com.smartholiday.exam.model;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.Objects;
 
 public class Song {
@@ -48,9 +50,10 @@ public class Song {
 
     @Override
     public String toString() {
-        return "Song{" +
-                "artist='" + artist + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("artist", artist)
+                .add("name", name)
+                .add("classifier", classifier)
+                .toString();
     }
 }

@@ -1,5 +1,7 @@
 package com.smartholiday.exam.model;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.Objects;
 
 public class FavoriteSong {
@@ -51,11 +53,12 @@ public class FavoriteSong {
 
     @Override
     public String toString() {
-        return "FavoriteSong{" +
-                "artist='" + artist + '\'' +
-                ", name='" + name + '\'' +
-                ", listenings=" + listenings +
-                '}';
+        return MoreObjects.toStringHelper(this)
+                .add("artist", artist)
+                .add("name", name)
+                .add("classifier", classifier)
+                .add("listenings", listenings)
+                .toString();
     }
 
     @Override
